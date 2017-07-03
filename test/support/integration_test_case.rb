@@ -1,3 +1,5 @@
+ENV["RACK_ENV"] = "test"
+
 class IntegrationTestCase < TestCase
   include Rack::Test::Methods
 
