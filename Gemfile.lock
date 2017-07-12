@@ -2,6 +2,8 @@ GEM
   remote: https://rubygems.org/
   specs:
     byebug (9.0.6)
+    gruff (0.7.0)
+      rmagick (~> 2.13, >= 2.13.4)
     metaclass (0.0.4)
     minitest (5.10.2)
     mocha (1.2.1)
@@ -13,6 +15,7 @@ GEM
     rack-test (0.6.3)
       rack (>= 1.0)
     rake (12.0.0)
+    rmagick (2.16.0)
     sinatra (2.0.0)
       mustermann (~> 1.0)
       rack (~> 2.0)
@@ -25,10 +28,12 @@ PLATFORMS
 
 DEPENDENCIES
   byebug
+  gruff
   minitest
   mocha
   rack-test
   rake
+  rmagick
   sinatra
 
 BUNDLED WITH

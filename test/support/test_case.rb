@@ -10,7 +10,7 @@ class TestCase < Minitest::Spec
 
   protected
 
-  def fake_uuid(character = "x")
-    [8, 4, 4, 4, 12].map { |length| character * length }.join("-")
+  def fixture_path
+    Pathname.new(File.join(__dir__, "..", "fixtures"))
   end
 end

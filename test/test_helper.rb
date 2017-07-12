@@ -8,6 +8,8 @@ require "rack/test"
 require "pp"
 require "byebug"
 
+require "rmagick"
+
 require_relative "support/test_case"
 require_relative "support/integration_test_case"
 

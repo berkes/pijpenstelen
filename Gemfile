@@ -4,6 +4,9 @@ source "https://rubygems.org"
 gem "rake"
 gem "sinatra"
 
+gem "gruff"
+gem "rmagick"
+
 group :test do
   gem "minitest"
   gem "rack-test"
