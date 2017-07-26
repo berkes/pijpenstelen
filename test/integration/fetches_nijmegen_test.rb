@@ -29,6 +29,27 @@ class FetchesNijmegenTest < IntegrationTestCase
     end
   end
 
+  describe "lat=53.8, lon=5.7" do
+    let(:fake_data) { File.read(fixture_path.join("data_amsterdam.txt")) }
+    before do
+      @lat = 53.8
+      @lon = 5.7
+    end
+
+    it "returns an different image" do
+      @temp_file = Tempfile.new("test_image.png")
+      @temp_file.binmode
+
+      get "/graph.png?lat=#{lat}&lon=#{lon}"
+
+      @temp_file.write last_response.body
+      @temp_file.rewind
+
+      comparison_file = fixture_path.join("graph_nijmegen.png")
+      refute_equal_images(comparison_file, @temp_file.path)
+    end
+  end
+
   private
 
   def lat
@@ -51,6 +72,15 @@ class FetchesNijmegenTest < IntegrationTestCase
       FileUtils.cp(actual_path, File.join("/tmp/artifacts/graph.png"))
       raise
     end
+  end
+
+  def refute_equal_images(expected_path, actual_path, msg = nil)
+    msg ||= "Images are equal: #{expected_path} == #{actual_path}"
+
+    expected_hist = comparable_hist_for(expected_path)
+    actual_hist   = comparable_hist_for(actual_path)
+
+    refute actual_hist == expected_hist, msg
   end
 
   def comparable_hist_for(path)

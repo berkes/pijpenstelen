@@ -6,19 +6,25 @@ class PijpenstelenBuienradarTest < TestCase
   let(:lon) { BigDecimal.new(2, 6) }
 
   describe "#data" do
-    it "it contains label-value pairs reversed from file" do
-      subject.file = stub("File", each_line: ["070|08:05", "100|08:10"])
+    it "it contains label-value pairs reversed from response body" do
+      response = stub("Net::HTTPResponse", each_line: ["070|08:05", "100|08:10"])
+      subject.stubs(response: response)
+
       assert_equal({ "08:05" => "070", "08:10" => "100" }, subject.data)
     end
 
     it "strips lines with whitespace" do
-      subject.file = stub("File", each_line: [" 070|08:05\n"])
+      response = stub("Net::HTTPResponse", each_line: ["070|08:05\n"])
+      subject.stubs(response: response)
+
       assert_equal({ "08:05" => "070" }, subject.data)
     end
+  end
 
-    it "reads from file" do
-      File.expects(:read).returns("")
-      subject.data
+  describe "response" do
+    it "reads from Net::HTTP" do
+      Net::HTTP.expects(:get).returns(stub("Net::HTTPResponse"))
+      subject.response
     end
   end
 
