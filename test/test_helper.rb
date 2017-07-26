@@ -4,6 +4,7 @@ require "minitest/spec"
 require "minitest/pride"
 
 require "mocha/mini_test"
+require "webmock/minitest"
 require "rack/test"
 require "pp"
 require "byebug"

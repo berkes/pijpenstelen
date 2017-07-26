@@ -5,6 +5,6 @@ require "pijpenstelen.rb"
 
 get "/graph.png" do
   content_type :png
-  return Pijpenstelen::Graph.new(Pijpenstelen::Buienradar.new.data).to_blob
+  buienradar = Pijpenstelen::Buienradar.new(params[:lat] || 0, params[:lon] || 0)
+  return Pijpenstelen::Graph.new(buienradar.data).to_blob
 end
-

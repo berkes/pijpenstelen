@@ -2,8 +2,15 @@ require "test_helper"
 
 class FetchesNijmegenTest < IntegrationTestCase
   describe "lat=51.842176, lon=5.859548" do
+    it "reads from buienradar API using lat and lon" do
+      get "/graph.png?lat=#{lat}&lon=#{lon}"
+      assert_requested(:get,
+                       "https://gpsgadget.buienradar.nl/data/raintext/",
+                       query: { lat: "51.84", lon: "5.86"})
+    end
+
     it "returns an image" do
-      get "/graph.png?lat=#{lat},lon=#{lon}"
+      get "/graph.png?lat=#{lat}&lon=#{lon}"
       assert last_response.ok?, "Expected OK, got #{last_response.status}"
       assert_equal "image/png", last_response.content_type
     end
@@ -21,6 +28,8 @@ class FetchesNijmegenTest < IntegrationTestCase
       assert_equal_images(comparison_file, @temp_file.path)
     end
   end
+
+  private
 
   def lat
     @lat ||= 51.842176

@@ -11,6 +11,7 @@ group :test do
   gem "minitest"
   gem "rack-test"
   gem "mocha"
+  gem "webmock"
 end
 
 group :development, :test do
