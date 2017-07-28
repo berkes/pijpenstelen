@@ -2,8 +2,15 @@ require "test_helper"
 
 class FetchesNijmegenTest < IntegrationTestCase
   describe "lat=51.842176, lon=5.859548" do
+    it "reads from buienradar API using lat and lon" do
+      get "/graph.png?lat=#{lat}&lon=#{lon}"
+      assert_requested(:get,
+                       "https://gpsgadget.buienradar.nl/data/raintext/",
+                       query: { lat: "51.84", lon: "5.86"})
+    end
+
     it "returns an image" do
-      get "/graph.png?lat=#{lat},lon=#{lon}"
+      get "/graph.png?lat=#{lat}&lon=#{lon}"
       assert last_response.ok?, "Expected OK, got #{last_response.status}"
       assert_equal "image/png", last_response.content_type
     end
@@ -21,6 +28,29 @@ class FetchesNijmegenTest < IntegrationTestCase
       assert_equal_images(comparison_file, @temp_file.path)
     end
   end
+
+  describe "lat=53.8, lon=5.7" do
+    let(:fake_data) { File.read(fixture_path.join("data_amsterdam.txt")) }
+    before do
+      @lat = 53.8
+      @lon = 5.7
+    end
+
+    it "returns an different image" do
+      @temp_file = Tempfile.new("test_image.png")
+      @temp_file.binmode
+
+      get "/graph.png?lat=#{lat}&lon=#{lon}"
+
+      @temp_file.write last_response.body
+      @temp_file.rewind
+
+      comparison_file = fixture_path.join("graph_nijmegen.png")
+      refute_equal_images(comparison_file, @temp_file.path)
+    end
+  end
+
+  private
 
   def lat
     @lat ||= 51.842176
@@ -42,6 +72,15 @@ class FetchesNijmegenTest < IntegrationTestCase
       FileUtils.cp(actual_path, File.join("/tmp/artifacts/graph.png"))
       raise
     end
+  end
+
+  def refute_equal_images(expected_path, actual_path, msg = nil)
+    msg ||= "Images are equal: #{expected_path} == #{actual_path}"
+
+    expected_hist = comparable_hist_for(expected_path)
+    actual_hist   = comparable_hist_for(actual_path)
+
+    refute actual_hist == expected_hist, msg
   end
 
   def comparable_hist_for(path)
