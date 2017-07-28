@@ -7,13 +7,10 @@ class TestCase < Minitest::Spec
 
   before do
     uri_template = Addressable::Template.new(
-      "https://gpsgadget.buienradar.nl/data/raintext/{?lat,lon}"
+      "https://gps.buienradar.nl/getrr.php{?lat,lon}"
     )
     stub_request(:get, uri_template).
       to_return(status: 200, body: fake_data)
-  end
-
-  after do
   end
 
   protected
