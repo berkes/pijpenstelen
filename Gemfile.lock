@@ -9,10 +9,13 @@ GEM
     gruff (0.7.0)
       rmagick (~> 2.13, >= 2.13.4)
     hashdiff (0.3.4)
+    httparty (0.15.6)
+      multi_xml (>= 0.5.2)
     metaclass (0.0.4)
     minitest (5.10.2)
     mocha (1.2.1)
       metaclass (~> 0.0.1)
+    multi_xml (0.6.0)
     mustermann (1.0.0)
     public_suffix (2.0.5)
     rack (2.0.3)
@@ -40,6 +43,7 @@ PLATFORMS
 DEPENDENCIES
   byebug
   gruff
+  httparty
   minitest
   mocha
   rack-test

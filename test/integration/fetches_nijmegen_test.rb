@@ -5,7 +5,7 @@ class FetchesNijmegenTest < IntegrationTestCase
     it "reads from buienradar API using lat and lon" do
       get "/graph.png?lat=#{lat}&lon=#{lon}"
       assert_requested(:get,
-                       "https://gpsgadget.buienradar.nl/data/raintext/",
+                       "https://gps.buienradar.nl/getrr.php",
                        query: { lat: "51.84", lon: "5.86"})
     end
 
