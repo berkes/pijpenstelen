@@ -7,6 +7,8 @@ gem "sinatra"
 gem "gruff"
 gem "rmagick"
 
+gem "httparty"
+
 group :test do
   gem "minitest"
   gem "rack-test"

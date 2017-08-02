@@ -8,23 +8,22 @@ class PijpenstelenBuienradarTest < TestCase
   describe "#data" do
     it "it contains label-value pairs reversed from response body" do
       response = stub("Net::HTTPResponse", each_line: ["070|08:05", "100|08:10"])
-      subject.stubs(response: response)
+      Pijpenstelen::Buienradar.stubs(get: response)
 
       assert_equal({ "08:05" => "070", "08:10" => "100" }, subject.data)
     end
 
     it "strips lines with whitespace" do
       response = stub("Net::HTTPResponse", each_line: ["070|08:05\n"])
-      subject.stubs(response: response)
+      Pijpenstelen::Buienradar.stubs(get: response)
 
       assert_equal({ "08:05" => "070" }, subject.data)
     end
   end
 
-  describe "response" do
-    it "reads from Net::HTTP" do
-      Net::HTTP.expects(:get).returns(stub("Net::HTTPResponse"))
-      subject.response
+  describe "#options" do
+    it "contains query with lat and lon" do
+      assert_equal({ lat: lat.to_s("F"), lon: lon.to_s("F") }, subject.options[:query])
     end
   end
 
