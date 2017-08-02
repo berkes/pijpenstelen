@@ -1,0 +1,25 @@
+#!/usr/bin/env ruby
+
+$LOAD_PATH.unshift File.expand_path('../../lib', __FILE__)
+require "bundler/setup"
+require_relative "../lib/pijpenstelen"
+
+# Tooling
+require "pp"
+
+# You can add fixtures and/or initialization code here to make experimenting
+# with your gem easier. You can also use a different console, if you like.
+
+def set_var(name, value)
+  puts "set: @#{name} = #{value}"
+  instance_variable_set("@#{name}".to_sym, value)
+end
+
+set_var(:lat, 52.37)
+set_var(:lon, 4.9)
+
+# So we don't have to type the namespace all the time
+include Pijpenstelen
+
+require "irb"
+IRB.start
