@@ -69,7 +69,9 @@ class FetchesNijmegenTest < IntegrationTestCase
     begin
       assert_equal actual_hist, expected_hist, msg
     rescue Minitest::Assertion
-      FileUtils.cp(actual_path, File.join("/tmp/artifacts/graph.png"))
+      dir = File.join("/tmp", "artifacts")
+      FileUtils.mkdir_p(dir)
+      FileUtils.cp(actual_path, File.join(dir, "graph.png"))
       raise
     end
   end
