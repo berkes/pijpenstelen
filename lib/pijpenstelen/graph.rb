@@ -3,12 +3,14 @@ require "gruff"
 class Pijpenstelen::Graph
   attr_accessor :graph
 
-  def initialize(data)
+  def initialize(data, graph = Gruff::StackedArea.new)
     @raw_data = data
-    @graph = Gruff::Line.new
+    @graph = graph
+
     @graph.labels = labels
     @graph.data "Regen", self.data
     @graph.minimum_value = 0
+    @graph.marker_font_size = 14
   end
 
   def to_blob
@@ -20,6 +22,12 @@ class Pijpenstelen::Graph
   end
 
   def labels
-    @labels ||= Hash[@raw_data.keys.each_with_index.map{|v,i| [i,v]} ]
+    @labels ||= all_labels.select { |k,_| k.even? }
+  end
+
+  private
+
+  def all_labels
+    Hash[@raw_data.keys.each_with_index.map { |v,i| [i, v] }]
   end
 end
