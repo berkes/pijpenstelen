@@ -1,3 +1,5 @@
+require "gruff"
+
 class Pijpenstelen::Graph
   attr_accessor :graph
 
