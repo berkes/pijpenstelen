@@ -6,6 +6,7 @@ class Pijpenstelen::Graph
     @graph = Gruff::Line.new
     @graph.labels = labels
     @graph.data "Regen", self.data
+    @graph.minimum_value = 0
   end
 
   def to_blob
