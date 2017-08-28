@@ -63,31 +63,26 @@ class FetchesNijmegenTest < IntegrationTestCase
   def assert_equal_images(expected_path, actual_path, msg = nil)
     msg ||= "Images are not equal: #{expected_path} !== #{actual_path}"
 
-    expected_hist = comparable_hist_for(expected_path)
-    actual_hist   = comparable_hist_for(actual_path)
+    expected_img = Magick::Image.read(expected_path)[0]
+    actual_img = Magick::Image.read(actual_path)[0]
+    diff_img, diff_metric = expected_img.
+      compare_channel(actual_img, Magick::MeanSquaredErrorMetric)
 
-    begin
-      assert_equal actual_hist, expected_hist, msg
-    rescue Minitest::Assertion
-      dir = File.join("/tmp", "artifacts")
-      FileUtils.mkdir_p(dir)
-      FileUtils.cp(actual_path, File.join(dir, "graph.png"))
-      raise
-    end
+    assert_in_delta(0.0, diff_metric, 0.0001, msg)
+  rescue Minitest::Assertion
+    img_path = File.join("/tmp", "#{name}.png")
+    diff_img.write(img_path)
+    raise
   end
 
   def refute_equal_images(expected_path, actual_path, msg = nil)
     msg ||= "Images are equal: #{expected_path} == #{actual_path}"
 
-    expected_hist = comparable_hist_for(expected_path)
-    actual_hist   = comparable_hist_for(actual_path)
+    expected_img = Magick::Image.read(expected_path)[0]
+    actual_img = Magick::Image.read(actual_path)[0]
+    _, diff_metric = expected_img.
+                     compare_channel(actual_img, Magick::MeanSquaredErrorMetric)
 
-    refute actual_hist == expected_hist, msg
-  end
-
-  def comparable_hist_for(path)
-    img = Magick::Image.read(path)[0]
-    hist = img.color_histogram.sort_by {|_pixel, count| count }.to_h
-    JSON.pretty_generate hist
+    refute_in_delta(0.0, diff_metric, 0.0001, msg)
   end
 end
