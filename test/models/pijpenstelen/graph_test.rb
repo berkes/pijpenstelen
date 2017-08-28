@@ -6,8 +6,14 @@ class PijpenstelenGraphTest < TestCase
       @graph = stub("Graph", 
                     :labels= => true,
                     data: true,
+                    :theme_pastel => {},
                     :marker_font_size= => 0,
                     :minimum_value= => 0)
+    end
+
+    it "defines theme pastel" do
+      @graph.expects(:theme_pastel)
+      @subject = Pijpenstelen::Graph.new(data, @graph)
     end
 
     it "sets marker font size to 14 px" do

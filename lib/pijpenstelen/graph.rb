@@ -7,6 +7,7 @@ class Pijpenstelen::Graph
     @raw_data = data
     @graph = graph
 
+    @graph.theme_pastel
     @graph.labels = labels
     @graph.data "Regen", self.data
     @graph.minimum_value = 0
