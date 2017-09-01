@@ -28,6 +28,16 @@ class PijpenstelenBuienradarTest < TestCase
   end
 
   describe "lat,lon" do
+    describe "defaults" do
+      let(:lat) { nil }
+      let(:lon) { nil }
+
+      it "is set to De Bilt" do
+        assert_equal BigDecimal.new("52.11"), subject.lat
+        assert_equal BigDecimal.new("5.18"), subject.lon
+      end
+    end
+
     describe "with floats" do
       let(:lat) { 1.000 }
       let(:lon) { 2.000 }

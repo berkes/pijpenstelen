@@ -6,8 +6,8 @@ class Pijpenstelen::Buienradar
   base_uri "https://gps.buienradar.nl"
 
   def initialize(lat, lon)
-    @lat = lat
-    @lon = lon
+    @lat = lat || de_bilt[:lat]
+    @lon = lon || de_bilt[:lon]
   end
 
   def data
@@ -25,5 +25,14 @@ class Pijpenstelen::Buienradar
 
   def options
     { query: { lat: lat.to_s("F"), lon: lon.to_s("F") } }
+  end
+
+  private
+
+  def de_bilt
+    {
+      lat: "52.1100",
+      lon: "5.1806"
+    }
   end
 end
