@@ -9,7 +9,7 @@ class Pijpenstelen::Graph
 
     @graph.theme_pastel
     @graph.labels = labels
-    @graph.data "Regen", self.data
+    @graph.data "Regen [mm/s]", self.data
     @graph.minimum_value = 0
     @graph.marker_font_size = 14
   end
