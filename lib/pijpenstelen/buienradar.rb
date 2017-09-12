@@ -11,8 +11,7 @@ class Pijpenstelen::Buienradar
   end
 
   def data
-    response = self.class.get("/getrr.php", options)
-    Hash[response.each_line.map {|l| l.strip.split("|").reverse }]
+    parsed.map{ |k,v| Pijpenstelen::Point.new(k, v) }
   end
 
   def lat
@@ -28,6 +27,14 @@ class Pijpenstelen::Buienradar
   end
 
   private
+
+  def parsed
+    Hash[response.each_line.map {|l| l.strip.split("|").reverse }]
+  end
+
+  def response
+    response = self.class.get("/getrr.php", options)
+  end
 
   def de_bilt
     {
