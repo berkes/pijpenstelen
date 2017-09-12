@@ -6,18 +6,21 @@ class PijpenstelenBuienradarTest < TestCase
   let(:lon) { BigDecimal.new(2, 6) }
 
   describe "#data" do
-    it "it contains label-value pairs reversed from response body" do
+    it "it contains Points from response body" do
       response = stub("Net::HTTPResponse", each_line: ["070|08:05", "100|08:10"])
       Pijpenstelen::Buienradar.stubs(get: response)
 
-      assert_equal({ "08:05" => "070", "08:10" => "100" }, subject.data)
+      points = [Pijpenstelen::Point.new("08:05", "070"),
+                Pijpenstelen::Point.new("08:10", "100")]
+      assert_equal(points, subject.data)
     end
 
     it "strips lines with whitespace" do
       response = stub("Net::HTTPResponse", each_line: ["070|08:05\n"])
       Pijpenstelen::Buienradar.stubs(get: response)
 
-      assert_equal({ "08:05" => "070" }, subject.data)
+      points = [Pijpenstelen::Point.new("08:05", "070")]
+      assert_equal(points, subject.data)
     end
   end
 
