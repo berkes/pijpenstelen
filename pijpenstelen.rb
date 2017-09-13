@@ -4,6 +4,10 @@ require "gruff"
 require "tempfile"
 require "pijpenstelen.rb"
 
+get "/" do
+  send_file File.join(settings.public_folder, "index.html")
+end
+
 get "/graph.png" do
   content_type :png
   buienradar = Pijpenstelen::Buienradar.new(params[:lat], params[:lon])

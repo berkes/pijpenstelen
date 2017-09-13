@@ -16,3 +16,6 @@ require_relative "support/integration_test_case"
 
 require "sinatra"
 require_relative "../pijpenstelen.rb"
+
+## Otherwise sinatra sets root to /test
+settings.root = File.expand_path(File.join(__dir__, ".."))
