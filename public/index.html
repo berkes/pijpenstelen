@@ -62,32 +62,29 @@ function success(position) {
   var request = new XMLHttpRequest();
   request.open("GET", "/place?lat=" + lat + "&lon=" + lon, true);
   request.onload = function() {
-    console.log(request);
     if (request.status >= 200 && request.status < 400) {
-      city_elem().innerHTML = request.responseText;
-      graph_elem().alt = "Regen in "+ request.responseText;
+      set_city_to(request.responseText);
     } else {
-      error_city();
+      set_city_to();
     }
   };
-  request.onerror = error_city;
+  request.onerror = set_city_to;
   request.send();
 }
 function error(msg) {
   error_graph(msg);
-  error_city();
+  set_city_to();
 }
 function error_graph(msg) {
   msg = typeof msg == "string" ? msg : "Kon locatie niet ophalen.";
   graph_elem().src = "";
-  graph_elem().alt = msg;
 }
-function error_city(msg) {
-  msg = typeof msg == "string" ? msg : "Onbekend";
-  city_elem().innerHTML = msg
-}
-function city_elem() {
-  return document.getElementById("city");
+function set_city_to(name) {
+  name = typeof name == "string" ? name : "Onbekend";
+
+  document.getElementById("city").innerHTML = name;
+  document.title = "Wanneer wordt het droog in " + name +"?";
+  graph_elem().alt = "Regen in " + name;
 }
 function graph_elem() {
   return document.getElementById("graph");
