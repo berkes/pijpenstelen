@@ -43,8 +43,8 @@ footer a {
 }
 </style>
 </head>
-<body>
- <h1>Is het <b>al droog?</b></h1>
+<body class="loading">
+ <h1>Is het <b>al droog</b> in <span id="city">...</span>?</h1>
  <img src="" alt="Wanneer wordt het droog op de plek waar je nu bent? Bekijk een grafiek van Buienradar voor de regen van de komende uren" id="graph">
  <footer> <div class="inner">
    Door <a href="http://berk.es/" title="Freelance Rails developer Bèr Kessels">Bèr `berkes` Kessels</a>.<br/><br/>
@@ -55,22 +55,50 @@ footer a {
   </div></footer>
 <script>
 function success(position) {
-  var s = document.querySelector('#graph');
-  s.src = "/graph.png?lat="+position.coords.latitude+"&lon="+position.coords.longitude
+  var lat = position.coords.latitude;
+  var lon = position.coords.longitude;
+  graph_elem().src = "/graph.png?lat=" + lat + "&lon=" + lon;
+
+  var request = new XMLHttpRequest();
+  request.open("GET", "/place?lat=" + lat + "&lon=" + lon, true);
+  request.onload = function() {
+    console.log(request);
+    if (request.status >= 200 && request.status < 400) {
+      city_elem().innerHTML = request.responseText;
+      graph_elem().alt = "Regen in "+ request.responseText;
+    } else {
+      error_city();
+    }
+  };
+  request.onerror = error_city;
+  request.send();
 }
 function error(msg) {
-  var s = document.querySelector('#graph');
-  s.src = "";
-  s.alt = typeof msg == 'string' ? msg : "Kon locatie niet ophalen.";
-
-  var s = document.querySelector('#graph');
-  s.src = "/graph.png"
+  error_graph(msg);
+  error_city();
 }
+function error_graph(msg) {
+  msg = typeof msg == "string" ? msg : "Kon locatie niet ophalen.";
+  graph_elem().src = "";
+  graph_elem().alt = msg;
+}
+function error_city(msg) {
+  msg = typeof msg == "string" ? msg : "Onbekend";
+  city_elem().innerHTML = msg
+}
+function city_elem() {
+  return document.getElementById("city");
+}
+function graph_elem() {
+  return document.getElementById("graph");
+}
+
 if (navigator.geolocation) {
   navigator.geolocation.getCurrentPosition(success, error);
 } else {
-  error('not supported');
+  error("Location is not supported on this Browser.");
 }
+
 </script>
 <!-- Piwik -->
 <script type="text/javascript">
