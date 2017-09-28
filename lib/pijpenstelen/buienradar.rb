@@ -33,7 +33,7 @@ class Pijpenstelen::Buienradar
   end
 
   def response
-    response = self.class.get("/getrr.php", options)
+    self.class.get("/getrr.php", options)
   end
 
   def de_bilt

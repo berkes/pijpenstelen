@@ -9,6 +9,8 @@ gem "rmagick"
 
 gem "httparty"
 
+gem "offline_geocoder"
+
 group :test do
   gem "minitest"
   gem "rack-test"
