@@ -13,3 +13,8 @@ get "/graph.png" do
   buienradar = Pijpenstelen::Buienradar.new(params[:lat], params[:lon])
   return Pijpenstelen::Graph.new(buienradar.data).to_blob
 end
+
+get "/place" do
+  content_type :text
+  return Pijpenstelen::Place.new(params[:lat], params[:lon]).name
+end

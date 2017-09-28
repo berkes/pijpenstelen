@@ -43,34 +43,59 @@ footer a {
 }
 </style>
 </head>
-<body>
- <h1>Is het <b>al droog?</b></h1>
+<body class="loading">
+ <h1>Is het <b>al droog</b> in <span id="city">...</span>?</h1>
  <img src="" alt="Wanneer wordt het droog op de plek waar je nu bent? Bekijk een grafiek van Buienradar voor de regen van de komende uren" id="graph">
  <footer> <div class="inner">
    Door <a href="http://berk.es/" title="Freelance Rails developer Bèr Kessels">Bèr `berkes` Kessels</a>.<br/><br/>
    <small>
-     <a href="https://buienradar.nl/">Buienradar voor de grafiekjes</a>, <a href="https://web.archive.org/web/20161003081136/http://remysharp.com/2009/01/07/html5-enabling-script/">HTML5 enabling van Remy Sharp</a>.
+     <a href="https://buienradar.nl/">Buienradar voor de grafiekjes</a>, <a href="http://remysharp.com/2009/01/07/html5-enabling-script/">HTML5 enabling van Remy Sharp</a>.
      <a href="https://www.flickr.com/photos/georgeyboy/4090248973/in/photolist-7erAw2-tbmsu-4f8M32-93VFYQ-8B5oJ4-fgEH8v-Dq87h-bUwT6s-mjmpS-fAzQEo-w6gXa-7vSAez-apDfth-8nkhJj-7RHJye-9SuZwi-ef9KNp-mUaEwo-64deAL-ez3eUq-8qhwUz-f7PKRv-udW4R-dvy4N3-6y5CxQ-6yz5wZ-6pBzdN-9kReED-7PPGyR-px5R7-9dagm1-6htn5-jVo9BD-hQ1SPU-bjV8Hp-5bLFcW-78a4na-iHWho-k1H87W-cjNnk-8QmzpK-aSGRFD-aes47B-9FvJnF-X9sVw-brVcJ-bWToXN-rQQkX-diBG2k-fNPhAj">Achtergrond door georgeyboy</a>.
     </small>
   </div></footer>
 <script>
 function success(position) {
-  var s = document.querySelector('#graph');
-  s.src = "/graph.png?lat="+position.coords.latitude+"&lon="+position.coords.longitude
+  var lat = position.coords.latitude;
+  var lon = position.coords.longitude;
+  graph_elem().src = "/graph.png?lat=" + lat + "&lon=" + lon;
+
+  var request = new XMLHttpRequest();
+  request.open("GET", "/place?lat=" + lat + "&lon=" + lon, true);
+  request.onload = function() {
+    if (request.status >= 200 && request.status < 400) {
+      set_city_to(request.responseText);
+    } else {
+      set_city_to();
+    }
+  };
+  request.onerror = set_city_to;
+  request.send();
 }
 function error(msg) {
-  var s = document.querySelector('#graph');
-  s.src = "";
-  s.alt = typeof msg == 'string' ? msg : "Kon locatie niet ophalen.";
-
-  var s = document.querySelector('#graph');
-  s.src = "/graph.png"
+  error_graph(msg);
+  set_city_to();
 }
+function error_graph(msg) {
+  msg = typeof msg == "string" ? msg : "Kon locatie niet ophalen.";
+  graph_elem().src = "";
+}
+function set_city_to(name) {
+  name = typeof name == "string" ? name : "Onbekend";
+
+  document.getElementById("city").innerHTML = name;
+  document.title = "Wanneer wordt het droog in " + name +"?";
+  graph_elem().alt = "Regen in " + name;
+}
+function graph_elem() {
+  return document.getElementById("graph");
+}
+
 if (navigator.geolocation) {
   navigator.geolocation.getCurrentPosition(success, error);
 } else {
-  error('not supported');
+  error("Location is not supported on this Browser.");
 }
+
 </script>
 <!-- Piwik -->
 <script type="text/javascript">
