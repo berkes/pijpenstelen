@@ -1,4 +1,5 @@
 require "test_helper"
+require "fileutils"
 
 class FetchesNijmegenTest < IntegrationTestCase
   describe "lat=51.842176, lon=5.859548" do
@@ -65,12 +66,13 @@ class FetchesNijmegenTest < IntegrationTestCase
 
     expected_img = Magick::Image.read(expected_path)[0]
     actual_img = Magick::Image.read(actual_path)[0]
-    diff_img, diff_metric = expected_img.
-      compare_channel(actual_img, Magick::MeanSquaredErrorMetric)
+    diff_img, diff_metric = expected_img.compare_channel(actual_img, Magick::MeanSquaredErrorMetric)
 
     assert_in_delta(0.0, diff_metric, 0.0001, msg)
   rescue Minitest::Assertion
-    img_path = File.join("/tmp", "#{name}.png")
+    dir = File.join("/tmp", "artifacts")
+    FileUtils.mkdir_p(dir)
+    img_path = File.join(dir, "#{name}.png")
     diff_img.write(img_path)
     raise
   end
