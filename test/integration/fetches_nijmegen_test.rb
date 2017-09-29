@@ -2,6 +2,8 @@ require "test_helper"
 require "fileutils"
 
 class FetchesNijmegenTest < IntegrationTestCase
+  IMAGE_DELTA = 0.007
+
   describe "lat=51.842176, lon=5.859548" do
     it "reads from buienradar API using lat and lon" do
       get "/graph.png?lat=#{lat}&lon=#{lon}"
@@ -68,7 +70,7 @@ class FetchesNijmegenTest < IntegrationTestCase
     actual_img = Magick::Image.read(actual_path)[0]
     diff_img, diff_metric = expected_img.compare_channel(actual_img, Magick::MeanSquaredErrorMetric)
 
-    assert_in_delta(0.0, diff_metric, 0.0001, msg)
+    assert_in_delta(0.0, diff_metric, IMAGE_DELTA, msg)
   rescue Minitest::Assertion
     dir = File.join("/tmp", "artifacts")
     FileUtils.mkdir_p(dir)
@@ -85,6 +87,6 @@ class FetchesNijmegenTest < IntegrationTestCase
     _, diff_metric = expected_img.
                      compare_channel(actual_img, Magick::MeanSquaredErrorMetric)
 
-    refute_in_delta(0.0, diff_metric, 0.0001, msg)
+    refute_in_delta(0.0, diff_metric, IMAGE_DELTA, msg)
   end
 end
