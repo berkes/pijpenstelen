@@ -22,3 +22,7 @@ end
 group :development, :test do
   gem "byebug"
 end
+
+group :development, :test do
+  gem "capistrano"
+end
