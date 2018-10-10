@@ -1,6 +1,4 @@
-require "rack/ssl"
+$LOAD_PATH << '.'
 require "./pijpenstelen.rb"
-
-use Rack::SSL if ENV["RACK_ENV"] == "production"
 
 run Sinatra::Application
