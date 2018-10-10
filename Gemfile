@@ -2,8 +2,8 @@
 source "https://rubygems.org"
 
 gem "rake"
+gem 'puma'
 gem "sinatra"
-gem "rack-ssl"
 
 gem "gruff"
 gem "rmagick"
@@ -25,4 +25,5 @@ end
 
 group :development, :test do
   gem "capistrano"
+  gem "capistrano-bundler"
 end
