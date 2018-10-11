@@ -6,7 +6,7 @@ Page that shows rain precipitation in a graph for your current location.
 
 Ensure you have Ruby (2.x), and bundler installed.
 
-1. `git clone https://github.com/berkes/pijpenstelen`
+1. `git clone https://git.webschuur.com/berkes/pijpenstelen.git`
 2. `bundle install`
 3. `rackup`
 
