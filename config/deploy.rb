@@ -2,7 +2,7 @@
 lock "~> 3.10.0"
 
 set :application, "aldroog_html"
-set :repo_url, "git@github.com:berkes/pijpenstelen.git"
+set :repo_url, "git@git.webschuur.com:berkes/pijpenstelen.git"
 
 # Default branch is :master
 # ask :branch, `git rev-parse --abbrev-ref HEAD`.chomp
