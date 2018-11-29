@@ -3,7 +3,7 @@ require "minitest/autorun"
 require "minitest/spec"
 require "minitest/pride"
 
-require "mocha/mini_test"
+require "mocha/minitest"
 require "webmock/minitest"
 require "rack/test"
 require "pp"
