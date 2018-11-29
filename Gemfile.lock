@@ -37,7 +37,7 @@ GEM
     offline_geocoder (0.1.0)
       kdtree (~> 0.3)
     public_suffix (2.0.5)
-    puma (3.11.0)
+    puma (3.12.0)
     rack (2.0.6)
     rack-protection (2.0.4)
       rack
